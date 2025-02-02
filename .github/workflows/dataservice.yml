@@ -1,0 +1,96 @@
+name: Authorization
+
+on:
+    push:
+        branches:
+            - dev
+            - main
+    pull_request:
+        types:
+            - synchronize
+
+jobs:
+    build:
+        name: Build and Deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check if repository is a fork
+              id: check_fork
+              run: echo "::set-output name=is_fork::${{ github.event.repository.fork }}"
+
+            - name: Executing remote SSH commands using password
+              if: steps.check_fork.outputs.is_fork == 'true'
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                  host: ${{ secrets.HOST }}
+                  username: ${{ secrets.USERNAME }}
+                  password: ${{ secrets.PASSWORD }}
+                  port: ${{ secrets.PORT }}
+                  script: |
+                      cd /home/ubuntu/
+                      echo "🔄 Cтягиваем код с github"
+                      echo "🗑 Очищаем следы прошлых запусков, если имеются"
+                      if [ -d "streaming-dataservice" ]; then
+                          rm -rf streaming-dataservice
+                      fi
+                      git clone git@github.com:VladyslavDobrovolskyi/streaming-dataservice.git
+                      cd streaming-dataservice
+                      git checkout dev
+                      git pull
+                      rm -rf .git
+
+                      echo "🔄 Остановка и пересборка контейнера"
+                      echo "🛑 Проверка наличия контейнера streaming-dataservice"
+                      if [ $(docker ps -q -f name=streaming-dataservice) ]; then
+                          echo "🛑 Остановка контейнера streaming-dataservice"
+                          docker stop streaming-dataservice || true
+                          docker rm streaming-dataservice || true
+                      fi
+
+                      echo "🗑 Удаление предыдущего образа streaming-dataservice, если он существует"
+                      if [ $(docker images -q streaming-dataservice) ]; then
+                          docker rmi streaming-dataservice || true
+                      fi
+
+                      echo "🛠 Пересборка контейнера streaming-dataservice без кэша"
+                      docker build -t streaming-dataservice .
+
+                      echo "🔍 Проверка наличия сети streaming-network"
+                      if [ ! $(docker network ls -q -f name=streaming-network) ]; then
+                          echo "🌐 Сеть streaming-network не найдена, создаем сеть"
+                          docker network create streaming-network
+                      fi
+
+                      echo "🚀 Запуск контейнера streaming-dataservice"
+                      docker run -d --name streaming-dataservice \
+                        --network streaming-network \
+                        --restart always \
+                        -p 2222:2222 \
+                        streaming-dataservice
+
+                      echo "🔍 Проверка, что контейнер streaming-dataservice поднялся"
+                      if [ $(docker ps -q -f name=streaming-dataservice) ]; then
+                          echo "✅ Контейнер streaming-dataservice успешно запущен"
+                      else
+                          echo "❌ Контейнер streaming-dataservice не запущен"
+                          exit 1
+                      fi
+
+                      cd /home/ubuntu/
+
+                      echo "🔍 Проверка наличия контейнеров postgres и nginx"
+                      if [ ! $(docker ps -q -f name=postgres) ]; then
+                          echo "❌ Контейнер postgres не найден, запускаем docker-compose up"
+                          docker-compose up -d postgres
+                      fi
+                      if [ ! $(docker ps -q -f name=nginx) ]; then
+                          echo "❌ Контейнер nginx не найден, запускаем docker-compose up"
+                          docker-compose up -d nginx
+                      fi
+
+                      echo "🗑 Очищаем пространство"
+                      if [ -d "streaming-dataservice" ]; then
+                          rm -rf streaming-dataservice
+                      fi
+
+                      echo "✅ Деплой завершен успешно!"

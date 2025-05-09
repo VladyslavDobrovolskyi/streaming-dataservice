@@ -10,15 +10,15 @@ jobs:
         name: Build and Deploy
         runs-on: ubuntu-latest
         steps:
-            - name: Executing remote SSH commands using password
-              uses: appleboy/ssh-action@v1.0.3
+            - name: Executing remote SSH commands using key
+              uses: appleboy/ssh-action@v1.2.2
               with:
                   host: ${{ secrets.HOST }}
                   username: ${{ secrets.USERNAME }}
-                  password: ${{ secrets.PASSWORD }}
+                  key: ${{ secrets.KEY }}
                   port: ${{ secrets.PORT }}
                   script: |
-                      cd /home/ubuntu/
+                      cd /home/vdobrovolskyi/watchtogether.fun
                       echo "🔄 Cтягиваем код с github"
                       echo "🗑 Очищаем следы прошлых запусков, если имеются"
                       if [ -d "streaming-dataservice" ]; then

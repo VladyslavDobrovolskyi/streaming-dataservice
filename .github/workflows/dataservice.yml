@@ -46,17 +46,17 @@ jobs:
                       echo "🛠 Пересборка контейнера streaming-dataservice без кэша"
                       docker build -t streaming-dataservice .
 
-                      echo "🔍 Проверка наличия сети streaming-network"
-                      if [ ! $(docker network ls -q -f name=streaming-network) ]; then
-                          echo "🌐 Сеть streaming-network не найдена, создаем сеть"
-                          docker network create streaming-network
+                      echo "🔍 Проверка наличия сети watchtogether-network"
+                      if [ ! $(docker network ls -q -f name=watchtogether-network) ]; then
+                          echo "🌐 Сеть watchtogether-network не найдена, создаем сеть"
+                          docker network create watchtogether-network
                       fi
 
                       echo "🚀 Запуск контейнера streaming-dataservice"
                       docker run -d --name streaming-dataservice \
-                        --network streaming-network \
+                        --network watchtogether-network \
                         --restart always \
-                        -p 2222:2222 \
+                        -p 20222:20222 \
                         streaming-dataservice
 
                       echo "🔍 Проверка, что контейнер streaming-dataservice поднялся"

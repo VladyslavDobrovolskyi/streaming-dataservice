@@ -18,25 +18,6 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public Room createRoom(Room room) {
-        if (roomRepository.existsById(room.getId())) {
-            throw new RuntimeException("This room already exists");
-        }
-        return roomRepository.save(room);
-    }
-
-    public Room findRoomById(UUID id) {
-        return roomRepository.findById(id).orElseThrow();
-    }
-
-    public Room updateRoom(Room room) {
-        return roomRepository.save(room);
-    }
-
-    public void deleteRoom(UUID id) {
-        Room room = roomRepository.findById(id).orElseThrow();
-        roomRepository.delete(room);
-    }
      public void test() {
         return 'test'
     }

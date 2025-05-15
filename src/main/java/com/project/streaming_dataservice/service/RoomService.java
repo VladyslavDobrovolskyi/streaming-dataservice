@@ -18,7 +18,7 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-     public void test() {
+     public String test() {
         return "test";
     }
 }

@@ -14,11 +14,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Room {
 
-   
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Column(nullable = false)
     private Long movieName;
 
+    @Column(nullable = false)
     private String password;
 
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.project.streaming_dataservice.service.RoomService;
-import com.project.streaming_dataservice.models.Room;
+import com.project.streaming_dataservice.model.Room;
 
 @RestController
 @RequestMapping("/api/room")
@@ -27,6 +27,15 @@ public ResponseEntity<Room> createRoom(@RequestBody Room room) {
 }
 
 
+/*************  ✨ Windsurf Command ⭐  *************/
+    /**
+     * This is a simple test method to check that the room endpoint is working
+     * correctly. It calls the test method on the roomService and returns the
+     * result as a string.
+     *
+     * @return The result of the roomService.test() method as a string.
+     */
+/*******  5c9956ec-2f0f-4f30-90ee-619ab944f9e7  *******/
     @GetMapping("/hello")
     public String helloRoom() {
         return roomService.test();

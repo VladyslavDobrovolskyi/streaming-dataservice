@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.streaming_dataservice.service.RoomService;
 
 @RestController
+@RequestMapping("/api/room")
 public class RoomController {
 
     private final RoomService roomService;
@@ -13,7 +14,7 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @GetMapping("/api/room/hello")
+    @GetMapping("/hello")
     public String helloRoom() {
         return roomService.test();
     }

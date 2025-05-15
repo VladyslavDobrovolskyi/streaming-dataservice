@@ -15,6 +15,13 @@ public class RoomController {
         this.roomService = roomService;
     }
 
+@PostMapping("/create")
+public ResponseEntity<Room> createRoom(@RequestBody Room room) {
+    Room createdRoom = roomService.createRoom(room);
+    return new ResponseEntity<>(createdRoom, HttpStatus.CREATED);
+}
+
+
     @GetMapping("/hello")
     public String helloRoom() {
         return roomService.test();

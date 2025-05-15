@@ -15,8 +15,12 @@ import java.time.LocalDate;
 public class Room {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    
+    @Column(unique = true, nullable = false, updatable = false)
+    private UUID roomUUID;
 
     @Column(nullable = false)
     private Long movieName;

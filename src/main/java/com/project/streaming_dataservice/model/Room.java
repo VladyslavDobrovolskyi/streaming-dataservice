@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Room {
 
-    @Column(nullable = false)
+   
     private UUID id;
 
     private Long movieName;

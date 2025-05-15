@@ -20,8 +20,6 @@ public class RoomService {
 
     
     public Room createRoom(Room room) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        room.setCreatedBy(authentication.getName());
         return roomRepository.save(room);
     }
      public String test() {

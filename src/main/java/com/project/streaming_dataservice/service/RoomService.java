@@ -29,9 +29,10 @@ public class RoomService {
         this.seanceRepository = seanceRepository;
     }
 
-    public Room createRoom(Room room) {
+    public Room createRoom(Room room, User owner) {
         // Генерируем UUID для комнаты
         room.setUuid(UUID.randomUUID());
+        room.setOwner(owner);
 
         // Загружаем фильм из базы по id, если он есть
         if (room.getMovie() != null && room.getMovie().getId() != null) {

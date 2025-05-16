@@ -28,7 +28,7 @@ public class SeanceController {
     // Закрыть сеанс(ы) владельца по ownerId в параметре запроса
     @DeleteMapping("/close")
     public ResponseEntity<String> closeSeances(@RequestParam Long ownerId) {
-        seanceService.closeSeancesByOwnerId(ownerId);
+        seanceService.closeSeanceByOwnerId(ownerId);
         return ResponseEntity.ok("Seances closed for ownerId = " + ownerId);
     }
 }

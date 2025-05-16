@@ -12,6 +12,5 @@ public interface RoomRepository extends JpaRepository<Room, String> {
 
     boolean existsByMovieName(String movieName);
 
-    boolean existsByRoomUUID(UUID roomUUID);
 }
 

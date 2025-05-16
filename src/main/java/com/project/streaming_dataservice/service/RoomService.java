@@ -83,9 +83,9 @@ public class RoomService {
     }
 
       @Transactional
-    @Scheduled(fixedRate = 1 * 60 * 1000) // запускать каждые 5 минут
+    @Scheduled(fixedRate = 5 * 60 * 1000) // запускать каждые 5 минут
     public void deleteInactiveRooms() {
-        LocalDateTime cutoff = LocalDateTime.now().minusMinutes(2);
+        LocalDateTime cutoff = LocalDateTime.now().minusMinutes(10); // удаляем комнаты, созданные более 2 минут
         List<Room> rooms = roomRepository.findByCreatedAtBefore(cutoff);
         
         for (Room room : rooms) {

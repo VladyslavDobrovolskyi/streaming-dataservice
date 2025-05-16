@@ -30,23 +30,26 @@ public class RoomService {
         this.seanceRepository = seanceRepository;
     }
 
-    public Room createRoom(Room room, User owner) {
-        // Генерируем UUID для комнаты
-        room.setUuid(UUID.randomUUID());
-        room.setOwner(owner);
-
-        // Загружаем фильм из базы по id, если он есть
-        if (room.getMovie() != null && room.getMovie().getId() != null) {
-            Movie movie = movieRepository.findById(room.getMovie().getId())
-                    .orElseThrow(() -> new RuntimeException("Movie not found"));
-            room.setMovie(movie);
-        } else {
-            throw new RuntimeException("Movie is required to create a room");
-        }
-
-
-        return roomRepository.save(room);
+    public Room createRoom(Room room) {
+    if (room.getUuid() == null) {
+        throw new RuntimeException("UUID is required to create a room");
     }
+
+    if (room.getOwner() == null) {
+        throw new RuntimeException("Owner is required to create a room");
+    }
+
+    if (room.getMovie() == null || room.getMovie().getId() == null) {
+        throw new RuntimeException("Movie is required to create a room");
+    }
+
+    // Проверяем, что фильм существует в базе
+    Movie movie = movieRepository.findById(room.getMovie().getId())
+            .orElseThrow(() -> new RuntimeException("Movie not found"));
+    room.setMovie(movie);
+
+    return roomRepository.save(room);
+}
 
     public boolean joinRoom(UUID roomUUID, String password) {
         Optional<Room> roomOpt = roomRepository.findById(roomUUID);

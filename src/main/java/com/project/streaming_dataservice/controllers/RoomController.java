@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.UUID;
 
 @RestController
@@ -21,16 +20,15 @@ public class RoomController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Room> createRoom(@Valid @RequestBody Room room, Principal principal) {
-        Room createdRoom = roomService.createRoom(room, principal);
+    public ResponseEntity<Room> createRoom(@Valid @RequestBody Room room) {
+        Room createdRoom = roomService.createRoom(room);
         return new ResponseEntity<>(createdRoom, HttpStatus.CREATED);
     }
 
     @PostMapping("/join")
     public ResponseEntity<String> joinRoom(@RequestParam UUID roomUUID,
-                                           @RequestParam(required = false) String password,
-                                           Principal principal) {
-        boolean joined = roomService.joinRoom(roomUUID, password, principal);
+                                           @RequestParam(required = false) String password) {
+        boolean joined = roomService.joinRoom(roomUUID, password);
         if (joined) {
             return ResponseEntity.ok("Successfully joined the room");
         } else {

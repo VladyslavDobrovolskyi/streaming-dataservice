@@ -1,14 +1,10 @@
 package com.project.streaming_dataservice.repos;
 
+import com.project.streaming_dataservice.model.Seance;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.project.streaming_dataservice.model.Room;
-
-import java.util.UUID;
-
 @Repository
-public interface RoomRepository extends JpaRepository<Room, UUID> {
-
+public interface SeanceRepository extends JpaRepository<Seance, Long> {
 
 }

@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.UUID;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "rooms")
@@ -15,18 +14,18 @@ import java.time.LocalDate;
 public class Room {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(nullable = false, updatable = false)
+    private UUID uuid; 
 
-    
-    @Column(unique = true, nullable = false, updatable = false)
-    private UUID roomUUID;
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private User owner;
 
-    @Column(nullable = false)
-    private String movieName;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "movie_id", nullable = false)
+    private Movie movie;
 
-    @Column(nullable = false)
-    private String password;
+    @Column(nullable = true)
+    private String password; 
 
 }
-

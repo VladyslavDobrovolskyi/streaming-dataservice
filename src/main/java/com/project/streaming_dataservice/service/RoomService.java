@@ -43,8 +43,6 @@ public class RoomService {
             throw new RuntimeException("Movie is required to create a room");
         }
 
-        // Пока владелец не установлен
-        room.setOwner(null);
 
         return roomRepository.save(room);
     }

@@ -23,7 +23,7 @@ public class Room {
     private UUID roomUUID;
 
     @Column(nullable = false)
-    private Long movieName;
+    private String movieName;
 
     @Column(nullable = false)
     private String password;

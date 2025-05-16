@@ -32,4 +32,6 @@ public class Room {
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(name = "empty_since")
+    private LocalDateTime emptySince;
 }

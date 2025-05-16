@@ -15,7 +15,7 @@ public class Room {
 
     @Id
     @Column(nullable = false, updatable = false)
-    private UUID uuid; 
+    private UUID id; 
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)

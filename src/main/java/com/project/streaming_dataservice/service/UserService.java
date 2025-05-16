@@ -1,10 +1,7 @@
 package com.project.streaming_dataservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import com.project.streaming_dataservice.model.User;
 import com.project.streaming_dataservice.repos.UserRepository;
 
@@ -26,7 +23,8 @@ public class UserService {
     }
 
     public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public User updateUser(User user) {
@@ -34,9 +32,8 @@ public class UserService {
     }
 
     public void deleteUser(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user != null) {
-            userRepository.delete(user);
-        }
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.delete(user);
     }
 }

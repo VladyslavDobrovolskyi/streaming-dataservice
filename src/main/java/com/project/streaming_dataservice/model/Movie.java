@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "movies")
 public class Movie {

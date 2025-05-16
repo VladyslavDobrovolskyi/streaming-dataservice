@@ -34,7 +34,7 @@ public class RoomService {
     }
 
     public Room createRoom(Room room) {
-        if (room.getUuid() == null) {
+        if (room.getId() == null) {
             throw new RuntimeException("UUID is required to create a room");
         }
         if (room.getOwner() == null) {

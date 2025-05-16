@@ -28,4 +28,7 @@ public class Room {
     @Column(nullable = true)
     private String password; 
 
+    @Column(nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
 }

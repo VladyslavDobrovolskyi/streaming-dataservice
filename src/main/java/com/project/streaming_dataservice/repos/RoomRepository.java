@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, UUID> {
-
+    
+List<Room> findByCreatedAtBefore(LocalDateTime dateTime);
 
 }

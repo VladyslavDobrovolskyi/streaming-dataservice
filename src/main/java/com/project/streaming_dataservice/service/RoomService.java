@@ -8,6 +8,8 @@ import com.project.streaming_dataservice.repos.MovieRepository;
 import com.project.streaming_dataservice.repos.RoomRepository;
 import com.project.streaming_dataservice.repos.SeanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
@@ -78,4 +80,21 @@ public class RoomService {
     public String test() {
         return "test";
     }
+
+      @Transactional
+    @Scheduled(fixedRate = 5 * 60 * 1000) // запускать каждые 5 минут
+    public void deleteInactiveRooms() {
+        LocalDateTime cutoff = LocalDateTime.now().minusMinutes(10);
+        List<Room> rooms = roomRepository.findByCreatedAtBefore(cutoff);
+        
+        for (Room room : rooms) {
+            // Проверяем есть ли сеансы у комнаты
+            boolean hasSeances = seanceRepository.existsByRoom(room);
+            if (!hasSeances) {
+                roomRepository.delete(room);
+                System.out.println("Deleted inactive room with id: " + room.getId());
+            }
+        }
+    }
+}
 }

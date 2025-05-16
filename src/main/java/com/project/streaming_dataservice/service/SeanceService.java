@@ -59,6 +59,8 @@ public class SeanceService {
 
     @Transactional
     public void closeSeanceByOwnerId(Long ownerId) {
+
+        System.out.println("Closing seances for ownerId = " + ownerId);
         List<Seance> seances = seanceRepository.findByOwnerId(ownerId);
         seanceRepository.deleteAll(seances);
     }

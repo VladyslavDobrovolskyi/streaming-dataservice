@@ -6,9 +6,12 @@ import org.springframework.stereotype.Repository;
 import com.project.streaming_dataservice.model.Room;
 
 @Repository
-public interface RoomRepository extends JpaRepository<Room, Long> {
+public interface RoomRepository extends JpaRepository<Room, String> {
 
-    Room findByMovieName(Long movieName);
+    Room findByMovieName(String movieName);
 
-    boolean existsByMovieName(Long movieName);
+    boolean existsByMovieName(String movieName);
+
+    boolean existsByRoomUUID(UUID roomUUID);
 }
+

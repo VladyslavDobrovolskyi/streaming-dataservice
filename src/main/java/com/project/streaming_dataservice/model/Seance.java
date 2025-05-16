@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "seances")
@@ -34,15 +32,6 @@ public class Seance {
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
-
-    // Все пользователи, участвующие в просмотре
-    @ManyToMany
-    @JoinTable(
-        name = "seance_users",
-        joinColumns = @JoinColumn(name = "seance_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> participants = new HashSet<>();
 
     // Дата и время создания
     @Column(nullable = false)

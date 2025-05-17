@@ -34,21 +34,17 @@ public class SeanceService {
     }
 
     @Transactional
-    public Seance openSeance(Seance seance) {
+    public Seance openSeance(Seance seance, User owner) {
         UUID roomId = seance.getRoom().getId();
         Room existingRoom = roomRepository.findById(roomId)
                 .orElseThrow(() -> new EntityNotFoundException("Room not found with id " + roomId));
-
-        String ownerId = seance.getOwner().getId();
-        User existingOwner = userRepository.findById(ownerId)
-                .orElseThrow(() -> new EntityNotFoundException("Owner not found with id " + ownerId));
 
         Long movieId = seance.getMovie().getId();
         Movie existingMovie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new EntityNotFoundException("Movie not found with id " + movieId));
 
         seance.setRoom(existingRoom);
-        seance.setOwner(existingOwner);
+        seance.setOwner(owner);  // ставим владельца из параметра
         seance.setMovie(existingMovie);
 
         return seanceRepository.save(seance);

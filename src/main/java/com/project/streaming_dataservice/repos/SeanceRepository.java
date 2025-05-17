@@ -7,8 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface SeanceRepository extends JpaRepository<Seance, Long> {
-    List<Seance> findByOwnerId(Long ownerId);
+public interface SeanceRepository extends JpaRepository<Seance, String> {
+    List<Seance> findByOwnerId(String ownerId);
     boolean existsByRoom(Room room);
 }

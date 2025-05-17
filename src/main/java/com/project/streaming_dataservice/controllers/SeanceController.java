@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/seances")
 public class SeanceController {
@@ -18,17 +21,21 @@ public class SeanceController {
         this.seanceService = seanceService;
     }
 
-    // Открыть сеанс - данные в теле запроса, включая owner
     @PostMapping("/open")
     public ResponseEntity<Seance> openSeance(@RequestBody @Valid Seance seance) {
         Seance opened = seanceService.openSeance(seance);
         return new ResponseEntity<>(opened, HttpStatus.CREATED);
     }
 
-    // Закрыть сеанс(ы) владельца по ownerId в параметре запроса
     @DeleteMapping("/close")
     public ResponseEntity<String> closeSeances(@RequestParam Long ownerId) {
         seanceService.closeSeanceByOwnerId(ownerId);
         return ResponseEntity.ok("Seances closed for ownerId = " + ownerId);
+    }
+
+    @GetMapping("/owner")
+    public ResponseEntity<List<Seance>> getSeancesByOwner(@RequestParam Long ownerId) {
+        List<Seance> seances = seanceService.getSeancesByOwnerId(ownerId);
+        return ResponseEntity.ok(seances);
     }
 }

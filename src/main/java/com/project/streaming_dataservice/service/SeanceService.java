@@ -8,6 +8,7 @@ import com.project.streaming_dataservice.repos.RoomRepository;
 import com.project.streaming_dataservice.repos.SeanceRepository;
 import com.project.streaming_dataservice.repos.UserRepository;
 import com.project.streaming_dataservice.repos.MovieRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,22 +35,18 @@ public class SeanceService {
 
     @Transactional
     public Seance openSeance(Seance seance) {
-        // Загружаем существующий Room по id
         UUID roomId = seance.getRoom().getId();
         Room existingRoom = roomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Room not found with id " + roomId));
 
-        // Загружаем существующего User (владельца)
         Long ownerId = seance.getOwner().getId();
         User existingOwner = userRepository.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException("Owner not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Owner not found with id " + ownerId));
 
-        // Загружаем существующий Movie
         Long movieId = seance.getMovie().getId();
         Movie existingMovie = movieRepository.findById(movieId)
-                .orElseThrow(() -> new RuntimeException("Movie not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Movie not found with id " + movieId));
 
-        // Устанавливаем загруженные сущности
         seance.setRoom(existingRoom);
         seance.setOwner(existingOwner);
         seance.setMovie(existingMovie);
@@ -58,14 +55,13 @@ public class SeanceService {
     }
 
     @Transactional
-    public void closeSeanceByOwnerId(String ownerId) {
-
+    public void closeSeanceByOwnerId(Long ownerId) {
         System.out.println("Closing seances for ownerId = " + ownerId);
         List<Seance> seances = seanceRepository.findByOwnerId(ownerId);
         seanceRepository.deleteAll(seances);
     }
 
-    public List<Seance> getSeancesByOwnerId(String ownerId) {
+    public List<Seance> getSeancesByOwnerId(Long ownerId) {
         return seanceRepository.findByOwnerId(ownerId);
     }
 }

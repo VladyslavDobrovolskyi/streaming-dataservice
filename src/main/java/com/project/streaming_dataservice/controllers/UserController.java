@@ -45,7 +45,7 @@ public class UserController {
         User createdUser = userService.registerUser(user);
 
         Cookie cookie = new Cookie(COOKIE_NAME, userId);
-        cookie.setSecure(true)
+        cookie.setSecure(true);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24 * 30); // 30 дней

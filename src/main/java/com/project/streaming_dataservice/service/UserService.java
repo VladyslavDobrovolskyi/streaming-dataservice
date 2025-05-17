@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.project.streaming_dataservice.model.User;
 import com.project.streaming_dataservice.repos.UserRepository;
-
+import java.util.UUID;
 @Service
 public class UserService {
 

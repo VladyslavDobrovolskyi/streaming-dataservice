@@ -28,13 +28,13 @@ public class SeanceController {
     }
 
     @DeleteMapping("/close")
-    public ResponseEntity<String> closeSeances(@RequestParam Long ownerId) {
+    public ResponseEntity<String> closeSeances(@RequestParam String ownerId) {
         seanceService.closeSeanceByOwnerId(ownerId);
         return ResponseEntity.ok("Seances closed for ownerId = " + ownerId);
     }
 
     @GetMapping("/owner")
-    public ResponseEntity<List<Seance>> getSeancesByOwner(@RequestParam Long ownerId) {
+    public ResponseEntity<List<Seance>> getSeancesByOwner(@RequestParam String ownerId) {
         List<Seance> seances = seanceService.getSeancesByOwnerId(ownerId);
         return ResponseEntity.ok(seances);
     }

@@ -1,6 +1,7 @@
 package com.project.streaming_dataservice.controllers;
 
 import com.project.streaming_dataservice.model.Room;
+import com.project.streaming_dataservice.requests.JoinRoomRequest;
 import com.project.streaming_dataservice.service.RoomService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -25,10 +26,9 @@ public class RoomController {
         return new ResponseEntity<>(createdRoom, HttpStatus.CREATED);
     }
 
-    @PostMapping("/join")
-    public ResponseEntity<String> joinRoom(@RequestParam UUID roomUUID,
-                                           @RequestParam(required = false) String password) {
-        boolean joined = roomService.joinRoom(roomUUID, password);
+  @PostMapping("/join")
+    public ResponseEntity<String> joinRoom(@RequestBody JoinRoomRequest request) {
+        boolean joined = roomService.joinRoom(request.getRoomUUID(), request.getPassword());
         if (joined) {
             return ResponseEntity.ok("Successfully joined the room");
         } else {

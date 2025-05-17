@@ -24,12 +24,27 @@ public class RoomController {
         this.userService = userService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Room> createRoom(@Valid @RequestBody Room room) {
-        Room createdRoom = roomService.createRoom(room);
-        return new ResponseEntity<>(createdRoom, HttpStatus.CREATED);
+  @PostMapping("/create")
+public ResponseEntity<?> createRoom(
+        @Valid @RequestBody Room room,
+        @CookieValue(value = "userId", required = false) String userId) {
+
+    if (userId == null || userId.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
     }
 
+    User user;
+    try {
+        user = userService.findUserById(userId);
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+    }
+
+    room.setOwner(user); // устанавливаем владельца комнаты
+
+    Room createdRoom = roomService.createRoom(room);
+    return new ResponseEntity<>(createdRoom, HttpStatus.CREATED);
+}
 @PostMapping("/join")
 public ResponseEntity<String> joinRoom(
         @RequestBody JoinRoomRequest request,

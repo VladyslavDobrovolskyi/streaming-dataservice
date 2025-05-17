@@ -79,10 +79,7 @@ public class RoomService {
         return "test";
     }
 
-    /**
-     * Обновление состояния всех комнат: устанавливаем или сбрасываем emptySince.
-     * Вызывать можно по крону или вручную.
-     */
+
     @Transactional
     @Scheduled(fixedRate = 60 * 1000) // каждую минуту
     public void updateRoomStates() {
@@ -92,13 +89,13 @@ public class RoomService {
             boolean hasSeances = seanceRepository.existsByRoom(room);
 
             if (hasSeances) {
-                // Если сеансы появились — сбросим таймер
+            
                 if (room.getEmptySince() != null) {
                     room.setEmptySince(null);
                     roomRepository.save(room);
                 }
             } else {
-                // Если сеансов нет — начать отсчет
+            
                 if (room.getEmptySince() == null) {
                     room.setEmptySince(LocalDateTime.now());
                     roomRepository.save(room);
@@ -107,9 +104,6 @@ public class RoomService {
         }
     }
 
-    /**
-     * Удаление комнат, у которых не было сеансов 10 минут
-     */
     @Transactional
     @Scheduled(fixedRate = 5 * 60 * 1000) // каждые 5 минут
     public void deleteInactiveRooms() {

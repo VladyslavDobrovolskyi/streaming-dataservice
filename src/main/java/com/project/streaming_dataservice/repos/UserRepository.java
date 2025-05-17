@@ -6,9 +6,8 @@ import java.util.Optional;
 import com.project.streaming_dataservice.model.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-
-    Optional<User> findByUsername(String email);
-
+public interface UserRepository extends JpaRepository<User, String> {
+    Optional<User> findByUsername(String username);
     boolean existsByUsername(String username);
 }
+

@@ -15,15 +15,23 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User registerUser(User user) {
-        if (userRepository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("This email is already in use");
-        }
-        return userRepository.save(user);
+   public User registerUser(User user) {
+    if (userRepository.existsByUsername(user.getUsername())) {
+        throw new RuntimeException("This email is already in use");
     }
+    if (user.getId() == null) {
+        user.setId(UUID.randomUUID().toString());
+    }
+    return userRepository.save(user);
+}
 
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public User findUserById(String id) {
+        return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
@@ -31,9 +39,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUser(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public void deleteUserById(String id) {
+        User user = findUserById(id);
         userRepository.delete(user);
     }
 }

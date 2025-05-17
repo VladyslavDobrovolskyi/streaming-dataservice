@@ -59,7 +59,7 @@ public class RoomService {
         return roomRepository.save(room);
     }
 
-    public boolean joinRoom(UUID roomUUID, String password, User user)) {
+    public boolean joinRoom(UUID roomUUID, String password, User user) {
         Optional<Room> roomOpt = roomRepository.findById(roomUUID);
         if (roomOpt.isEmpty()) {
             return false;

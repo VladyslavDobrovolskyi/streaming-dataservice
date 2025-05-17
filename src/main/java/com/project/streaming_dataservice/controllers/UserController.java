@@ -79,7 +79,7 @@ public class UserController {
         Optional<String> userId = getUserIdFromCookie(servletRequest);
         if (userId.isEmpty()) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No user cookie");
 
-        userService.deleteUser(userId.get());
+        userService.deleteUserById(userId.get());
 
         // удаляем куку
         Cookie cookie = new Cookie(COOKIE_NAME, null);

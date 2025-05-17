@@ -47,13 +47,14 @@ public class SeanceController {
     }
 
     @DeleteMapping("/close")
-    public ResponseEntity<String> closeSeances(@CookieValue(value = "userId", required = false) String userId) {
-        if (userId == null || userId.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
-        }
-        seanceService.closeSeanceByOwnerId(userId);
-        return ResponseEntity.ok("Seances closed for ownerId = " + userId);
+public ResponseEntity<?> closeSeances(@CookieValue(value = "userId", required = false) String userId) {
+    if (userId == null || userId.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized: missing user cookie");
     }
+
+    seanceService.closeSeanceByOwnerId(userId);
+    return ResponseEntity.noContent().build(); // 204 No Content
+}
 
     @GetMapping("/owner")
     public ResponseEntity<?> getSeancesByOwner(@CookieValue(value = "userId", required = false) String userId) {

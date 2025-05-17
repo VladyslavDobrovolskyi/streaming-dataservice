@@ -2,6 +2,7 @@ package com.project.streaming_dataservice.service;
 
 import com.project.streaming_dataservice.model.Movie;
 import com.project.streaming_dataservice.model.Room;
+import com.project.streaming_dataservice.model.User;
 import com.project.streaming_dataservice.repos.MovieRepository;
 import com.project.streaming_dataservice.repos.RoomRepository;
 import com.project.streaming_dataservice.repos.SeanceRepository;

@@ -7,6 +7,7 @@ import com.project.streaming_dataservice.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -53,6 +54,35 @@ public class UserController {
 
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
+
+    @PostMapping("/login")
+public ResponseEntity<?> login(@Valid @RequestBody RegistryUserRequest request,
+                               HttpServletResponse response) {
+
+    // Найти пользователя по username
+    User user;
+    try {
+        user = userService.findUserByUsername(request.getUsername());
+    } catch (EntityNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+    }
+
+    // Проверить пароль
+    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+    }
+
+    // Установить cookie с userId
+    Cookie cookie = new Cookie(COOKIE_NAME, user.getId());
+    cookie.setSecure(true);
+    cookie.setHttpOnly(true);
+    cookie.setPath("/");
+    cookie.setMaxAge(60 * 60 * 24 * 30); // 30 дней
+    response.addCookie(cookie);
+
+    return ResponseEntity.ok(user);
+}
+
 
     // ✅ Обновление по userId из cookie
     @PutMapping("/update")

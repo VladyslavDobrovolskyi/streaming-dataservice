@@ -39,7 +39,7 @@ public class SeanceService {
         Room existingRoom = roomRepository.findById(roomId)
                 .orElseThrow(() -> new EntityNotFoundException("Room not found with id " + roomId));
 
-        Long ownerId = seance.getOwner().getId();
+        String ownerId = seance.getOwner().getId();
         User existingOwner = userRepository.findById(ownerId)
                 .orElseThrow(() -> new EntityNotFoundException("Owner not found with id " + ownerId));
 
@@ -55,13 +55,13 @@ public class SeanceService {
     }
 
     @Transactional
-    public void closeSeanceByOwnerId(Long ownerId) {
+    public void closeSeanceByOwnerId(String ownerId) {
         System.out.println("Closing seances for ownerId = " + ownerId);
         List<Seance> seances = seanceRepository.findByOwnerId(ownerId);
         seanceRepository.deleteAll(seances);
     }
 
-    public List<Seance> getSeancesByOwnerId(Long ownerId) {
+    public List<Seance> getSeancesByOwnerId(String ownerId) {
         return seanceRepository.findByOwnerId(ownerId);
     }
 }

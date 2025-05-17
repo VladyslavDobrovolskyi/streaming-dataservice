@@ -34,19 +34,19 @@ public ResponseEntity<String> joinRoom(
         @RequestBody JoinRoomRequest request,
         @CookieValue(value = "userId", required = false) String userId) {
 
-    // Проверка наличия userId
     if (userId == null || userId.isEmpty()) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
     }
 
-    // Проверка существования пользователя
-    boolean userExists = userService.findUserById(userId);
-    if (!userExists) {
+    User user;
+    try {
+        user = userService.findUserById(userId);
+    } catch (RuntimeException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
     }
 
-    // Попытка входа в комнату
-    boolean joined = roomService.joinRoom(request.getRoomUUID(), request.getPassword(), userId);
+    boolean joined = roomService.joinRoom(request.getRoomUUID(), request.getPassword(), user);
+
     if (joined) {
         return ResponseEntity.ok("Successfully joined the room");
     } else {

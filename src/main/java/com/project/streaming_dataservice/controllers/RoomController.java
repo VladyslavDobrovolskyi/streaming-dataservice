@@ -1,6 +1,7 @@
 package com.project.streaming_dataservice.controllers;
 
 import com.project.streaming_dataservice.model.Room;
+import com.project.streaming_dataservice.model.User;
 import com.project.streaming_dataservice.requests.JoinRoomRequest;
 import com.project.streaming_dataservice.service.RoomService;
 import com.project.streaming_dataservice.service.UserService;

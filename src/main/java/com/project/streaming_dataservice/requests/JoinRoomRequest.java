@@ -1,4 +1,4 @@
-package com.project.streaming_dataservice.dto;
+package com.project.streaming_dataservice.requests;
 
 import java.util.UUID;
 

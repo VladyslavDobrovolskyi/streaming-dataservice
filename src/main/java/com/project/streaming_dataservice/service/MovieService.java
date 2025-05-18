@@ -1,7 +1,7 @@
 package com.project.streaming_dataservice.service;
 
 import java.util.List;
-
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,6 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
-    
     // Получить фильм
     public Movie getMovie(Long id) {
         return movieRepository.findById(id)

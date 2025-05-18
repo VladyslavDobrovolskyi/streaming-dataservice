@@ -72,7 +72,7 @@ public ResponseEntity<String> joinRoom(
     }
 }
 
-@GetMapping("/roomInfo")
+@GetMapping("/info")
 public ResponseEntity<?> getRoomInfo(
         @RequestParam UUID roomUUID,
         @CookieValue(value = "userId", required = false) String userId) {

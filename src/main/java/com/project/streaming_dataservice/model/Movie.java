@@ -22,7 +22,12 @@ public class Movie {
     private String title;
 
     @Column(nullable = false)
-    private String url;
+    private String poster;
+
+    @Column(nullable = false)
+    private String resource;
+
+ 
 
  
 }

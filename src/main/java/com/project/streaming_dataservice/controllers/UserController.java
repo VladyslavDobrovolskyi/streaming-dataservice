@@ -55,6 +55,15 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
+    
+    @GetMapping("/info")
+    public ResponseEntity<?> info(@CookieValue(value = COOKIE_NAME, required = false) String userId) {
+        if (userId == null || userId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
+        }
+        User user = userService.findUserById(userId);
+        return ResponseEntity.ok(user.getUsername());
+    }
     @PostMapping("/login")
 public ResponseEntity<?> login(@Valid @RequestBody RegistryUserRequest request,
                                HttpServletResponse response) {

@@ -70,6 +70,28 @@ public ResponseEntity<String> joinRoom(
     }
 }
 
+@GetMapping("/roomInfo")
+public ResponseEntity<?> getRoomInfo(
+        @RequestParam UUID roomUUID,
+        @CookieValue(value = "userId", required = false) String userId) {
+
+    if (userId == null || userId.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
+    }
+
+    Optional<Room> roomOpt = roomService.getRoomById(roomUUID);
+    if (roomOpt.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Room not found");
+    }
+
+    Room room = roomOpt.get();
+    if (room.getMovie() == null || room.getMovie().getId() == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found for this room");
+    }
+
+    return ResponseEntity.ok(room.getMovie().getId());
+}
+
     @GetMapping("/hello")
     public String helloRoom() {
         return roomService.test();

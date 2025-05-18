@@ -76,8 +76,9 @@ public class RoomService {
         return true;
     }
 
-    public String test() {
-        return "test";
+    
+    public Optional<Room> getRoomById(UUID roomUUID) {
+        return roomRepository.findById(roomUUID);
     }
 
 

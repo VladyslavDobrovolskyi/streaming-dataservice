@@ -56,7 +56,7 @@ public class UserController {
     }
 
     
-    @GetMapping("/info")
+    @GetMapping("/me")
     public ResponseEntity<?> info(@CookieValue(value = COOKIE_NAME, required = false) String userId) {
         if (userId == null || userId.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");

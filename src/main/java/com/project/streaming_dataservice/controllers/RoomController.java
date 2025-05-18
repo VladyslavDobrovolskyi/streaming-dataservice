@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Optional;
+
 
 import java.util.UUID;
 
@@ -94,6 +96,6 @@ public ResponseEntity<?> getRoomInfo(
 
     @GetMapping("/hello")
     public String helloRoom() {
-        return roomService.test();
+        return "test";
     }
 }

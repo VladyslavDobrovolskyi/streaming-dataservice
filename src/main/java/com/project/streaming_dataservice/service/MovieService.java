@@ -27,4 +27,11 @@ public class MovieService {
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
+
+    
+    // Получить фильм
+    public Movie getMovie(Long id) {
+        return movieRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Movie not found with id " + id));
+    }
 }

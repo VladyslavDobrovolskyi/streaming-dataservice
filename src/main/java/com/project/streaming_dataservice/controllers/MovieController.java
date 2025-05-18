@@ -33,4 +33,12 @@ public class MovieController {
         List<Movie> movies = movieService.getAllMovies();
         return ResponseEntity.ok(movies);
     }
+
+    
+    // Информация о фильме
+    @GetMapping("/{id}")
+    public ResponseEntity<Movie> getMovie(@PathVariable Long id) {
+        Movie movie = movieService.getMovie(id);
+        return ResponseEntity.ok(movie);
+    }
 }

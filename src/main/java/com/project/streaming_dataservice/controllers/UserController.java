@@ -62,7 +62,9 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
         }
         User user = userService.findUserById(userId);
-        return ResponseEntity.ok(user.getUsername());
+        Map<String, String> response = new HashMap<>();
+        response.put("username", user.getUsername());
+        return ResponseEntity.ok(response);
     }
     @PostMapping("/login")
 public ResponseEntity<?> login(@Valid @RequestBody RegistryUserRequest request,

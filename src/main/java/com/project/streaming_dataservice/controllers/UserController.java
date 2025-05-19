@@ -56,6 +56,44 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
+
+    @PostMapping("/ticket")
+public ResponseEntity<?> ticket(@Valid @RequestBody RegistryUserRequest request,
+                                HttpServletResponse response) {
+    User user;
+    boolean isNew = false;
+
+    try {
+        user = userService.findUserByUsername(request.getUsername());
+        // Проверка пароля
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
+    } catch (EntityNotFoundException e) {
+        // Если не найден, создаём нового
+        isNew = true;
+        String userId = UUID.randomUUID().toString();
+        user = new User();
+        user.setId(userId);
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user = userService.registerUser(user);
+    }
+
+    // Установка cookie
+    Cookie cookie = new Cookie(COOKIE_NAME, user.getId());
+    cookie.setSecure(true);
+    cookie.setHttpOnly(true);
+    cookie.setPath("/");
+    cookie.setMaxAge(60 * 60 * 24 * 30); // 30 дней
+    response.addCookie(cookie);
+
+    Map<String, Object> responseBody = new HashMap<>();
+    responseBody.put("username", user.getUsername());
+    responseBody.put("newUser", isNew);
+
+    return new ResponseEntity<>(responseBody, isNew ? HttpStatus.CREATED : HttpStatus.OK);
+}
     
     @GetMapping("/me")
     public ResponseEntity<?> info(@CookieValue(value = COOKIE_NAME, required = false) String userId) {

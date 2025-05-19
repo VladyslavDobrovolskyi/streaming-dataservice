@@ -95,6 +95,23 @@ public ResponseEntity<?> getRoomInfo(
     return ResponseEntity.ok(room.getMovie().getId());
 }
 
+    @GetMapping("/amiowner")
+    public ResponseEntity<?> amIOwner(
+            @RequestParam UUID roomUUID,
+            @CookieValue(value = "userId", required = false) String userId) {
+
+        if (userId == null || userId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
+        }
+
+        Optional<Room> roomOpt = roomService.getRoomById(roomUUID);
+        if (roomOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Room not found");
+        }
+
+        Room room = roomOpt.get();
+        return ResponseEntity.ok(room.getOwner().getId().equals(userId));
+    }
     @GetMapping("/hello")
     public String helloRoom() {
         return "test";

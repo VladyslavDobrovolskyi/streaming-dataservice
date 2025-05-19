@@ -33,6 +33,14 @@ public class SeanceService {
         this.movieRepository = movieRepository;
     }
 
+
+public boolean existsInRoom(UUID roomId, String userId) {
+    Room room = roomRepository.findById(roomId)
+            .orElseThrow(() -> new EntityNotFoundException("Room not found with id " + roomId));
+    return seanceRepository.existsByRoom(room) && seanceRepository.findByOwnerId(userId).stream()
+            .anyMatch(seance -> seance.getRoom().getId().equals(roomId));
+}
+
     @Transactional
     public Seance openSeance(Seance seance, User owner) {
         UUID roomId = seance.getRoom().getId();

@@ -71,7 +71,7 @@ public ResponseEntity<?> closeSeances(@CookieValue(value = "userId", required = 
         if (userId == null || userId.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
         }
-        boolean hasSeance = seanceService.existsByRoom(new Room(roomId));
+        boolean hasSeance = seanceService.existsInRoom(roomId, userId);
         return ResponseEntity.ok(hasSeance);
     }
 }

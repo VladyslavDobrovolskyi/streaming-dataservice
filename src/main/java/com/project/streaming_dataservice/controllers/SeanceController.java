@@ -75,4 +75,14 @@ public ResponseEntity<?> closeSeances(@CookieValue(value = "userId", required = 
         boolean hasSeance = seanceService.existsInRoom(roomId, userId);
         return ResponseEntity.ok(Map.of("status", hasSeance));
     }
+
+    
+    @PatchMapping("/continue")
+    public ResponseEntity<?> continueSeance(@CookieValue(value = "userId", required = false) String userId) {
+        if (userId == null || userId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
+        }
+        seanceService.continueSeanceByOwnerId(userId);
+        return ResponseEntity.noContent().build(); // 204 No Content
+    }
 }

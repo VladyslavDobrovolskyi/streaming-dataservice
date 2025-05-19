@@ -36,4 +36,10 @@ public class Seance {
     // Дата и время создания
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
+
+
+// Дата и время последнего обновления
+    @Column(nullable = false)
+    private LocalDateTime lastRenewal = LocalDateTime.now();
+
 }

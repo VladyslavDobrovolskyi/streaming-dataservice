@@ -68,4 +68,21 @@ public boolean existsInRoom(UUID roomId, String userId) {
     public List<Seance> getSeancesByOwnerId(String ownerId) {
         return seanceRepository.findByOwnerId(ownerId);
     }
+
+@Transactional
+public void continueSeanceByOwnerId(String ownerId) {
+    List<Seance> seances = seanceRepository.findByOwnerId(ownerId);
+    for (Seance seance : seances) {
+        seance.setLastRenewal(LocalDateTime.now());
+        seanceRepository.save(seance);
+    }
+}
+
+    @Scheduled(fixedRate = 300000) // каждые 5 минут
+    @Transactional
+    public void checkAndDeleteOldSeances() {
+        List<Seance> oldSeances = seanceRepository.findByLastRenewalBefore(LocalDateTime.now().minusMinutes(8));
+        seanceRepository.deleteAll(oldSeances);
+    }
+
 }

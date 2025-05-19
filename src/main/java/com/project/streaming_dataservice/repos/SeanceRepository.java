@@ -10,5 +10,6 @@ import java.util.List;
 public interface SeanceRepository extends JpaRepository<Seance, String> {
     List<Seance> findByOwnerId(String ownerId);
     boolean existsByRoom(Room room);
+    List<Seance> findByLastRenewalBefore(LocalDateTime time);
 
 }

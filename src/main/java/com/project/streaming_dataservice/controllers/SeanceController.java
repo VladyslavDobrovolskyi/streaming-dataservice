@@ -64,4 +64,14 @@ public ResponseEntity<?> closeSeances(@CookieValue(value = "userId", required = 
         List<Seance> seances = seanceService.getSeancesByOwnerId(userId);
         return ResponseEntity.ok(seances);
     }
+
+    
+    @GetMapping("/handshake/{roomId}")
+    public ResponseEntity<?> checkUserSeanceInRoom(@PathVariable UUID roomId, @CookieValue(value = "userId", required = false) String userId) {
+        if (userId == null || userId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
+        }
+        boolean hasSeance = seanceService.existsByRoom(new Room(roomId));
+        return ResponseEntity.ok(hasSeance);
+    }
 }

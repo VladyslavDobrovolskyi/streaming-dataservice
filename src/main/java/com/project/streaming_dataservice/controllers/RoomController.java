@@ -66,9 +66,9 @@ public ResponseEntity<String> joinRoom(
     boolean joined = roomService.joinRoom(request.getRoomUUID(), request.getPassword(), user);
 
     if (joined) {
-        return ResponseEntity.ok("Successfully joined the room");
+        return ResponseEntity.ok(Map.of("result", "Successfully joined the room"));
     } else {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Failed to join the room: Invalid UUID or password");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Failed to join the room: Invalid UUID or password"));
     }
 }
 

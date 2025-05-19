@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
 import java.util.List;
 import java.util.UUID;
+import java.time.LocalDateTime;
+
 
 @Service
 public class SeanceService {

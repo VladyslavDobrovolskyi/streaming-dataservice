@@ -69,7 +69,7 @@ public ResponseEntity<?> ticket(@Valid @RequestBody RegistryUserRequest request,
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
-    } catch (EntityNotFoundException e) {
+    } catch (RuntimeException e) {
         // Если не найден, создаём нового
         isNew = true;
         String userId = UUID.randomUUID().toString();

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/seances")
@@ -72,6 +73,6 @@ public ResponseEntity<?> closeSeances(@CookieValue(value = "userId", required = 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
         }
         boolean hasSeance = seanceService.existsInRoom(roomId, userId);
-        return ResponseEntity.ok(hasSeance);
+        return ResponseEntity.ok(Map.of("status", hasSeance));
     }
 }

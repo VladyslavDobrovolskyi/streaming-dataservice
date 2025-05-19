@@ -4,7 +4,7 @@ import com.project.streaming_dataservice.model.Seance;
 import com.project.streaming_dataservice.model.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface SeanceRepository extends JpaRepository<Seance, String> {

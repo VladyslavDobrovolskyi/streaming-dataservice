@@ -49,19 +49,19 @@ public ResponseEntity<?> createRoom(
     return new ResponseEntity<>(createdRoom, HttpStatus.CREATED);
 }
 @PostMapping("/join")
-public ResponseEntity<String> joinRoom(
+public ResponseEntity<Map<String, String>> joinRoom(
         @RequestBody JoinRoomRequest request,
         @CookieValue(value = "userId", required = false) String userId) {
 
     if (userId == null || userId.isEmpty()) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Missing or invalid user ID"));
     }
 
     User user;
     try {
         user = userService.findUserById(userId);
     } catch (RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not found"));
     }
 
     boolean joined = roomService.joinRoom(request.getRoomUUID(), request.getPassword(), user);

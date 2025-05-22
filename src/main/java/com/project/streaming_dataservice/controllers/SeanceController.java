@@ -76,7 +76,8 @@ public ResponseEntity<?> closeSeances(@CookieValue(value = "userId", required = 
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
         }
         Map<String, Object> response = new HashMap<>();
-        response.put("activeRoom", seanceService.getActiveRoomByUserId(userId));
+
+        response.put("activeRoom", seanceService.getActiveRoomIdByUserId(userId));
         return ResponseEntity.ok(response);
     }
     @GetMapping("/handshake/{roomId}")

@@ -61,14 +61,16 @@ public boolean existsInRoom(UUID roomId, String userId) {
     }
 
     
-    public Seance getActiveRoomByUserId(String userId) {
-        List<Seance> seance = seanceRepository.findByOwnerId(userId);
-
-        if (seance.isEmpty()) {
-            return null;
-        }
-        return seance.get(0).getRoom().getId();
+ public UUID getActiveRoomIdByUserId(String userId) {
+    List<Seance> userSeances = seanceRepository.findByOwnerId(userId);
+    
+    if (userSeances.isEmpty()) {
+        return null;
     }
+    
+    // Return the room ID from the first active seance
+    return userSeances.get(0).getRoom().getId();
+}
 
     @Transactional
     public void closeSeanceByOwnerId(String ownerId) {

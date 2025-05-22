@@ -68,8 +68,7 @@ public boolean existsInRoom(UUID roomId, String userId) {
             return null;
         }
         return seance.get(0).getRoom().getId();
-        
-
+    }
 
     @Transactional
     public void closeSeanceByOwnerId(String ownerId) {

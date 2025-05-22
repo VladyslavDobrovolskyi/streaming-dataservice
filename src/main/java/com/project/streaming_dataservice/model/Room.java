@@ -22,7 +22,7 @@ public class Room {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 

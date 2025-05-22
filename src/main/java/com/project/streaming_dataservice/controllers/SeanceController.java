@@ -42,6 +42,8 @@ public class SeanceController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
 
+
+        seanceService.closeSeanceByOwnerId(userId);
         Seance openedSeance = seanceService.openSeance(seance, user);
 
         return new ResponseEntity<>(openedSeance, HttpStatus.CREATED);

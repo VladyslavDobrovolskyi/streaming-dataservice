@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/seances")
@@ -69,6 +70,15 @@ public ResponseEntity<?> closeSeances(@CookieValue(value = "userId", required = 
     }
 
     
+    @GetMapping("/active")
+    public ResponseEntity<?> getActiveRoomByUserId(@CookieValue(value = "userId", required = false) String userId) {
+        if (userId == null || userId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Missing or invalid user ID");
+        }
+        Map<String, Object> response = new HashMap<>();
+        response.put("activeRoom", seanceService.getActiveRoomByUserId(userId));
+        return ResponseEntity.ok(response);
+    }
     @GetMapping("/handshake/{roomId}")
     public ResponseEntity<?> checkUserSeanceInRoom(@PathVariable UUID roomId, @CookieValue(value = "userId", required = false) String userId) {
         if (userId == null || userId.isEmpty()) {

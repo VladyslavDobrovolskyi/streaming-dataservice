@@ -60,6 +60,17 @@ public boolean existsInRoom(UUID roomId, String userId) {
         return seanceRepository.save(seance);
     }
 
+    
+    public Seance getActiveRoomByUserId(String userId) {
+        List<Seance> seance = seanceRepository.findByOwnerId(userId);
+
+        if (seance.isEmpty()) {
+            return null;
+        }
+        return seance.get(0).getRoom().getId();
+        
+
+
     @Transactional
     public void closeSeanceByOwnerId(String ownerId) {
         System.out.println("Closing seances for ownerId = " + ownerId);
